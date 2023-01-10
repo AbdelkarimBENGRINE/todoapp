@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/AbdelkarimBENGRINE/todoapp/models"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"github.com/sideshow/apns2/payload"
@@ -54,28 +55,63 @@ func createDBInstance() {
 }
 
 func GetAllTasks(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
+	w.Header().Set("Content-Type", "application/x-www-form-urlencoded")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	payload := getAllTasks()
 	json.NewEncoder(w).Encode(payload)
 }
 
-func CreateTask() {
-	
+func CreateTask(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/x-www-form-urlencoded")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	var task models.TodoList
+	json.NewDecoder(r.Body).Decode(&task)
+	insetOneTask(task)
+	json.NewEncoder(w).Encode(task)
 }
 
-func TaskComplete() {
+func TaskComplete(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/x-www-form-urlencoded")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "PUT")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+	params := mux.Vars(r)
+	TaskComplete(params["id"])
+	json.NewEncoder(w).Encode(params["id"])
+}
+
+func UndoTask(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/x-www-form-urlencoded")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "PUT")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+	params := mux.Vars(r)
+	UndoTask(params["id"])
+	json.NewEncoder(w).Encode(params["id"])
+}
+
+func DeleteTask(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/x-www-form-urlencoded")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "DELETE")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+	params := mux.Vars(r)
+	DeleteTask(params["id"])
+}
+
+func DeleteAllTasks(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func UndoTask() {
+func getAllTasks(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func DeleteTask() {
-
-}
-
-func DeleteAllTasks() {
+func TaskComplete(task string) {
 
 }
