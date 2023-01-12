@@ -11,7 +11,6 @@ import (
 	"github.com/AbdelkarimBENGRINE/todoapp/models"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
-	"github.com/sideshow/apns2/payload"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
