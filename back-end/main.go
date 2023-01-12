@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"todoapp/router"
+	"github.com/AbdelkarimBENGRINE/todoapp/router"
 )
 
 func main() {
