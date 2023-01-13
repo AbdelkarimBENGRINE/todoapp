@@ -7,7 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-
+	"io/ioutil"
 	"github.com/AbdelkarimBENGRINE/todoapp/models"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
@@ -49,8 +49,12 @@ func createDBInstance() {
 	}
 
 	fmt.Println("connected to mongodb")
-	client.Database(dbName).Collection(collectionName)
+	collection = client.Database(dbName).Collection(collectionName)
 	fmt.Println("collection instance created")
+}
+
+func Health(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("UP")
 }
 
 func GetAllTasks(w http.ResponseWriter, r *http.Request) {
@@ -66,6 +70,13 @@ func CreateTask(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	var task models.TodoList
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	defer r.Body.Close()
+	fmt.Println(string(body))
 	json.NewDecoder(r.Body).Decode(&task)
 	insertOneTask(task)
 	json.NewEncoder(w).Encode(task)
