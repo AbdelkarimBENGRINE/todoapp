@@ -98,14 +98,20 @@ func UndoTask(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteTask(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/x-www-form-urlencoded")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "DELETE")
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-
-	params := mux.Vars(r)
-	deleteOneTask(params["id"])
+    w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+    w.Header().Set("Access-Control-Allow-Methods", "DELETE")
+    w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+    params := mux.Vars(r)
+    id, _ := primitive.ObjectIDFromHex(params["id"])
+    filter := bson.M{"_id": id}
+    _, err := collection.DeleteOne(context.TODO(), filter)
+    if err != nil {
+        w.WriteHeader(http.StatusInternalServerError)
+        return
+    }
+    w.WriteHeader(http.StatusOK)
 }
+
 
 func DeleteAllTasks(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/x-www-form-urlencoded")
@@ -170,16 +176,16 @@ func undoTask(task string) {
 	fmt.Println("modified count:", result.ModifiedCount)
 }
 
-func deleteOneTask(task string) {
-	id, _ := primitive.ObjectIDFromHex(task)
-	filter := bson.M{"_id":id}
-	d, err := collection.DeleteOne(context.Background(), filter)
+// func deleteOneTask(task string) {
+// 	id, _ := primitive.ObjectIDFromHex(task)
+// 	filter := bson.M{"_id":id}
+// 	d, err := collection.DeleteOne(context.Background(), filter)
 
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println("Deleted Document", d.DeletedCount)
-}
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+// 	fmt.Println("Deleted Document", d.DeletedCount)
+// }
 
 func deleteAllTasks() int64 {
 	d, err := collection.DeleteMany(context.Background(), bson.D{{}})

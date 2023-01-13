@@ -10,7 +10,7 @@ class ToDoList extends Component {
 
         this.state ={
             task:"",
-            item:[],
+            items:[],
         };
     }
     componentDidMount(){
@@ -55,7 +55,6 @@ class ToDoList extends Component {
                             color="green";
                             style["textDecorationLine"] = "line-through";
                         }
-
                         return (
                            <Card key={item.id} color={color} fluid className="rough">
                                 <Card.Content>
@@ -66,13 +65,13 @@ class ToDoList extends Component {
                                             <Icon
                                             name="check circle"
                                             color="blue"
-                                            onClick={() => this.updateTask(item.id)}
+                                            onClick={() => this.updateTask(item._id)}
                                             />
                                             <span style={{paddingRight: 10}}>Undo</span>
                                             <Icon
                                             name="delete"
                                             color="red"
-                                            onClick={()=> this.deleteTask(item.id)}
+                                            onClick={()=> this.deleteTask(item._id)}
                                             />
                                             <span style={{paddingRight: 10}}>Delete</span>
                                         </Card.Meta> 
@@ -82,6 +81,7 @@ class ToDoList extends Component {
                     })
                 })
             } else {
+
                 this.setState({
                     items:[],
                 });
@@ -112,6 +112,7 @@ class ToDoList extends Component {
     }
 
     deleteTask = (id) => {
+        console.log(id)
         axios.delete(endpoint + "/api/deleteTask/" + id, {
             headers:{
                 "Content-Type":"application/x-www-form-urlencoded",
@@ -147,7 +148,7 @@ class ToDoList extends Component {
                     </Form>
                     </div>
                     <div className="row">
-                        <Card.Group> {this.state.item} </Card.Group>
+                        <Card.Group> {this.state.items} </Card.Group>
                     </div>
             </div>
         );
