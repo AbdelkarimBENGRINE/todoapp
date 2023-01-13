@@ -13,12 +13,12 @@ class ToDoList extends Component {
             item:[],
         };
     }
-    ComponentDidMount(){
+    componentDidMount(){
         this.getTask();
     }
     onChange = (event) => {
-        this.SetState({
-            [event.target.name] : event.targe.value,
+        this.setState({
+            [event.target.name] : event.target.value,
         })
     }
 
@@ -33,7 +33,7 @@ class ToDoList extends Component {
             },
         }).then((res) => {
             this.getTask();
-            this.SetState({
+            this.setState({
                 task:"",
             });
         console.log(res);
@@ -42,10 +42,10 @@ class ToDoList extends Component {
     };
 
     getTask = ()=> {
-        axios.get(endpoint + ("/api/task").then((result)=> {
-            if (res.data) {
-                this.SetState({
-                    items: res.data.map((item)=>{
+        axios.get(endpoint + "/api/task").then((result)=> {
+            if (result.data) {
+                this.setState({
+                    items: result.data.map((item)=>{
                         let color = "yellow";
                         let style = {
                             wordWrap: "break-word",
@@ -72,7 +72,7 @@ class ToDoList extends Component {
                                             <Icon
                                             name="delete"
                                             color="red"
-                                            onClick={()=> this.deleteTask(task.id)}
+                                            onClick={()=> this.deleteTask(item.id)}
                                             />
                                             <span style={{paddingRight: 10}}>Delete</span>
                                         </Card.Meta> 
@@ -82,11 +82,11 @@ class ToDoList extends Component {
                     })
                 })
             } else {
-                this.SetState({
+                this.setState({
                     items:[],
                 });
             }
-        }));
+        });
     };
  
     updateTask = (id) => {
@@ -101,7 +101,7 @@ class ToDoList extends Component {
     }
 
     undoTask = (id) => {
-        axios.put(endpoint + "api/task/" + id, {
+        axios.put(endpoint + "/api/undoTask/" + id, {
             headers:{
                 "Content-Type":"application/x-www-form-urlencoded",
             },
@@ -112,7 +112,7 @@ class ToDoList extends Component {
     }
 
     deleteTask = (id) => {
-        axios.delete(endpoint + "api/deleteTask/" + id, {
+        axios.delete(endpoint + "/api/deleteTask/" + id, {
             headers:{
                 "Content-Type":"application/x-www-form-urlencoded",
             },
@@ -143,7 +143,7 @@ class ToDoList extends Component {
                         fluid
                         placeholder="Create Task"
                         />
-                    {/* {<Button> Create Task </Button>} */}
+                    <button> Create Task </button>
                     </Form>
                     </div>
                     <div className="row">
