@@ -7,7 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"io/ioutil"
+	// "io/ioutil"
 	"github.com/AbdelkarimBENGRINE/todoapp/models"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
@@ -65,22 +65,15 @@ func GetAllTasks(w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateTask(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/x-www-form-urlencoded")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "POST")
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-	var task models.TodoList
-	body, err := ioutil.ReadAll(r.Body)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-	defer r.Body.Close()
-	fmt.Println(string(body))
-	json.NewDecoder(r.Body).Decode(&task)
-	insertOneTask(task)
-	json.NewEncoder(w).Encode(task)
+    w.Header().Set("Content-Type", "application/json")
+    w.Header().Set("Access-Control-Allow-Origin", "*")
+    w.Header().Set("Access-Control-Allow-Methods", "POST")
+    w.Header().Set("Access-Control-Allow-Headers", "*")
+    var task models.TodoList
+	task.Task = r.FormValue("task")
+    insertOneTask(task)
 }
+
 
 func TaskComplete(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/x-www-form-urlencoded")
