@@ -1,0 +1,25 @@
+version: '3'
+services:
+  frontend:
+    build:
+      context: ./front-end
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+  backend:
+    build:
+      context: ./back-end
+    ports:
+      - "9000:9000"
+    env_file: .env
+    networks:
+      - app-network
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - app-network
+networks:
+  app-network:
