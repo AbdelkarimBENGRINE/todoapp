@@ -2,14 +2,12 @@ package router
 
 import (
 	"github.com/AbdelkarimBENGRINE/todoapp/middleware"
-
 	"github.com/gorilla/mux"
 )
 
 func Router() *mux.Router{
-
 	router := mux.NewRouter()
-
+	
 	router.HandleFunc("/health", middleware.Health).Methods("GET", "OPTIONS")
 	router.HandleFunc("/api/task", middleware.GetAllTasks).Methods("GET", "OPTIONS")
 	router.HandleFunc("/api/task", middleware.CreateTask).Methods("POST", "OPTIONS")
