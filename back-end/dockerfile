@@ -4,6 +4,8 @@ WORKDIR /app
 
 COPY . .
 
+COPY .env .
+
 RUN go build -o back-end
 
 EXPOSE 9000

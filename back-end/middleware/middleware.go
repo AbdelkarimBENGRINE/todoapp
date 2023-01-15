@@ -25,6 +25,7 @@ func init() {
 }
 
 func loadTheEnv() {
+	fmt.Println(os.Getwd())
 	err := godotenv.Load(".env")
 	if err != nil {
 		log.Fatal("Error while loading the .env file")
